@@ -13,7 +13,7 @@ function App() {
                   {"name": "Manage enrolments", "link": "#"}
                 ]} />
     <Container>
-      <StudentList />
+      <StudentList title="Manage students" />
     </Container>
   </>
   );

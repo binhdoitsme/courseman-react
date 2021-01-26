@@ -5,8 +5,7 @@ function getAllStudents(onSuccess = undefined, onFailure = undefined) {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
-    },
-    mode: "no-cors"
+    }
   }).then(response => response.json()).then(onSuccess).catch(onFailure)
 }
 
