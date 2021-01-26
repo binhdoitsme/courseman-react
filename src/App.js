@@ -1,24 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import Navigation from './common/Navigation';
+import { Container } from 'react-bootstrap';
+import StudentList from './student/StudentList';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return (<>
+    <Navigation appName="CourseManApp"
+                modules={[
+                  {"name": "Manage students", "link": "#"},
+                  {"name": "Manage modules", "link": "#"},
+                  {"name": "Manage enrolments", "link": "#"}
+                ]} />
+    <Container>
+      <StudentList />
+    </Container>
+  </>
   );
 }
 
