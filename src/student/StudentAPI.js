@@ -9,8 +9,50 @@ function getAllStudents(onSuccess = undefined, onFailure = undefined) {
   }).then(response => response.json()).then(onSuccess).catch(onFailure)
 }
 
+function createStudent(data, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
+
+function getStudentById(id, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
+
+function deleteStudent(id, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(onSuccess).catch(onFailure);
+}
+
+function updateStudentById(id, data, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
+
 const studentAPI = {
-  "getAll": getAllStudents
+  "getAll": getAllStudents,
+  "create": createStudent,
+  "getById": getStudentById,
+  "deleteById": deleteStudent,
+  "updateById": updateStudentById
 };
 
 export default studentAPI;
