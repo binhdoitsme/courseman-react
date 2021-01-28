@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
 import studentAPI from "./StudentAPI";
 
-export default function (props) {
+export default function StudentCreate(props) {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
@@ -39,6 +39,7 @@ export default function (props) {
               <Form.Label>Name: </Form.Label>
               <FormControl type="text" value={name} onChange={e => setName(e.target.value)} />
             </FormGroup>
+            <br />
             <FormGroup>
               <Form.Label>Date of birth: </Form.Label>
               <FormControl type="date" value={dob} onChange={e => setDob(e.target.value)} />

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, FormControl, Row, Table } from 'react-bootstrap';
 import AutoDismissAlert from '../common/AutoDismissAlert';
-import DeleteConfirmation from "../common/DeleteConfirmation";
 import studentAPI from "./StudentAPI";
 import StudentCreate from './StudentCreate';
+import StudentDetails from './StudentDetails';
 
-const verticalAlignCell = { verticalAlign: "middle" };
-
-export default function (props) {
+export default function StudentList(props) {
   const [studentList, setStudentList] = useState([]);
   const [alert, setAlert] = useState(undefined);
 
   useEffect(() => studentAPI.getAll(setStudentList, err => window.alert(err)), 
-      [studentList.join(",")]);
+      [studentList.length]);
 
   const addToStudentList = student => setStudentList(studentList.concat(student));
   
@@ -73,15 +71,8 @@ export default function (props) {
         </thead>
         <tbody>
           {studentList.map((student, index) =>
-            <tr style={{ cursor: "pointer" }} key={index}>
-              <td style={verticalAlignCell}>{index + 1}</td>
-              <td style={verticalAlignCell}>{student.id}</td>
-              <td style={verticalAlignCell}>{student.name}</td>
-              <td style={verticalAlignCell}>{student.dob}</td>
-              <td className="col-md-1" style={verticalAlignCell}>
-                <DeleteConfirmation action={() => deleteAction(student.id)} />
-              </td>
-            </tr>)}
+            <StudentDetails key={index} {...student} index={index + 1}
+                deleteAction={deleteAction} />)}
         </tbody>
       </Table>
     </>

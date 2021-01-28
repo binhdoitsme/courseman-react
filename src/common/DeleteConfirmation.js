@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-export default function (props) {
+export default function DeleteConfirmation(props) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

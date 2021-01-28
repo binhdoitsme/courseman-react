@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
-export default function (props) {
+export default function AutoDismissAlert(props) {
   const [show, setShow] = useState(true);
   
   useEffect(() => {
@@ -9,18 +9,16 @@ export default function (props) {
       setShow(false);
       props.onDisposed();
     }, 2500);
-  }, [1])
+  })
 
   return (
     <>
-      <Alert show={show} variant={props.variant}>
+      <Alert className="mt-2" show={show} variant={props.variant}>
         <Alert.Heading>{props.heading}</Alert.Heading>
         <p>
           {props.text}
         </p>
       </Alert>
-
-      {/* {!show && <Button onClick={() => setShow(true)}>Show Alert</Button>} */}
     </>
   );
 }
