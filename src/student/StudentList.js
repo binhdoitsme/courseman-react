@@ -11,7 +11,7 @@ export default function (props) {
   const [studentList, setStudentList] = useState([]);
   const [alert, setAlert] = useState(undefined);
 
-  useEffect(() => studentAPI.getAll(setStudentList, err => alert(err)), 
+  useEffect(() => studentAPI.getAll(setStudentList, err => window.alert(err)), 
       [studentList.join(",")]);
 
   const addToStudentList = student => setStudentList(studentList.concat(student));
