@@ -1,35 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, FormControl, Row, Table } from 'react-bootstrap';
+import AutoDismissAlert from '../common/AutoDismissAlert';
+import DeleteConfirmation from "../common/DeleteConfirmation";
 import studentAPI from "./StudentAPI";
-import DeleteConfirmation from "../common/DeleteConfirmation"
 import StudentCreate from './StudentCreate';
 
 const verticalAlignCell = { verticalAlign: "middle" };
 
 export default function (props) {
   const [studentList, setStudentList] = useState([]);
-  const [alert, setAlert] = useState("");
+  const [alert, setAlert] = useState(undefined);
 
   useEffect(() => studentAPI.getAll(setStudentList, err => alert(err)), 
       [studentList.join(",")]);
 
   const addToStudentList = student => setStudentList(studentList.concat(student));
   
+  const onCreateSuccess = (student) => {
+    addToStudentList(student);
+    setAlert(<AutoDismissAlert variant="success" heading="Create successfully" 
+              text={`Successfully created resource with id ${student.id}!`}
+              onDisposed={() => setAlert(undefined)} />);
+  };
+  const onCreateFailure = (err) => {
+    setAlert(<AutoDismissAlert variant="success" heading="Failed to create" 
+              text={`Cannot create resource! Reason: ${err}!`}
+              onDisposed={() => setAlert(undefined)} />)
+  };
+
+
   const deleteAction = (id) => {
     const onDeleteSuccess = () => {
       setStudentList(studentList.filter(s => s.id !== id));
+      setAlert(<AutoDismissAlert variant="success" heading="Delete successfully" 
+                text={`Successfully deleted resource with id ${id}!`}
+                onDisposed={() => setAlert(undefined)} />)
     };
-    const onDeleteFailure = (err) => {};
+    const onDeleteFailure = (err) => {
+      setAlert(<AutoDismissAlert variant="success" heading="Failed to delete" 
+                text={`Cannot deleted resource with id ${id}! Reason: ${err}!`}
+                onDisposed={() => setAlert(undefined)} />)
+    };
     studentAPI.deleteById(id, onDeleteSuccess, onDeleteFailure);
   }
 
   // todo: set the alert
   return (
     <>
+      {alert ? alert : ""}
       <h2 className="my-4 text-center">{props.title}</h2>
       <Row className="my-3">
         <Col>
-          <StudentCreate onSuccess={addToStudentList} />
+          <StudentCreate onSuccess={onCreateSuccess} onFailure={onCreateFailure} />
         </Col>
         <Col></Col>
         <Col md={5}>

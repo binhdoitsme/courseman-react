@@ -24,7 +24,6 @@ export default function (props) {
     props.onSuccess(created);
     handleClose();
   };
-  const onFailure = error => {};
   
   return (
     <>
@@ -51,7 +50,7 @@ export default function (props) {
             Cancel
           </Button>
           <Button variant="primary" size="sm" onClick={() => 
-            studentAPI.create(getSubmitBody(), onSuccess, onFailure)
+            studentAPI.create(getSubmitBody(), onSuccess, props.onFailure)
           }>
             Create
           </Button>
