@@ -22,18 +22,32 @@ function StudentDetailsLine(props) {
 
 export default function StudentDetails(props) {
   const [show, setShow] = useState(false);
+  const [hasModal, setHasModal] = useState(false);
   const [name, setName] = useState(props.name);
   const [dob, setDob] = useState(props.dob);
   const [changed, setChanged] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleChange = (name, dob) => setChanged(name !== props.name || dob !== props.dob);
+  const handleShow = () => {
+    setShow(true);
+    setHasModal(true);
+  };
+  const handleChange = (name, dob) => 
+    setChanged(name !== props.name || dob !== props.dob);
+  const handleUpdate = () => {
+    props.updateAction({
+      "id": props.id,
+      "name": name,
+      "dob": dob
+    });
+    handleClose();
+  };
 
   return (
     <>
       <StudentDetailsLine onClick={handleShow} {...props} />
-      <Modal show={show} onHide={handleClose}>
+      {hasModal === true ? 
+      <Modal show={show} onHide={handleClose} onExited={() => setHasModal(false)}>
         <Modal.Header>
           <Modal.Title>Student details</Modal.Title>
           <button type="button" className="btn-close btn-sm" onClick={handleClose}></button>
@@ -64,11 +78,13 @@ export default function StudentDetails(props) {
           <Button variant="secondary" size="sm" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" size="sm" onClick={props.onAction} disabled={!changed}>
+          <Button variant="primary" size="sm" 
+            onClick={handleUpdate} disabled={!changed}>
             Update
           </Button>
         </Modal.Footer>
       </Modal>
+      : null}
     </>
   )
 };

@@ -32,7 +32,7 @@ export default function StudentList(props) {
       setStudentList(studentList.filter(s => s.id !== id));
       setAlert(<AutoDismissAlert variant="success" heading="Delete successfully" 
                 text={`Successfully deleted resource with id ${id}!`}
-                onDisposed={() => setAlert(undefined)} />)
+                onDisposed={() => setAlert(undefined)} />);
     };
     const onDeleteFailure = (err) => {
       setAlert(<AutoDismissAlert variant="success" heading="Failed to delete" 
@@ -40,6 +40,25 @@ export default function StudentList(props) {
                 onDisposed={() => setAlert(undefined)} />)
     };
     studentAPI.deleteById(id, onDeleteSuccess, onDeleteFailure);
+  }
+
+  const updateAction = (student) => {
+    const onUpdateSuccess = (updatedStudent) => {
+      const index = studentList.findIndex(s => s.id === student.id);
+      const before = studentList.slice(0, index);
+      const after = studentList.slice(index + 1);
+      const newStudentList = before.concat(updatedStudent).concat(after);
+      setStudentList(newStudentList);
+      setAlert(<AutoDismissAlert variant="success" heading="Update successfully" 
+                text={`Successfully updated resource with id ${student.id}!`}
+                onDisposed={() => setAlert(undefined)} />)
+    };
+    const onUpdateFailure = (err) => {
+      setAlert(<AutoDismissAlert variant="success" heading="Failed to delete" 
+                text={`Cannot deleted resource with id ${student.id}! Reason: ${err}!`}
+                onDisposed={() => setAlert(undefined)} />);
+    };
+    studentAPI.updateById(student.id, student, onUpdateSuccess, onUpdateFailure);
   }
 
   // todo: set the alert
@@ -72,6 +91,7 @@ export default function StudentList(props) {
         <tbody>
           {studentList.map((student, index) =>
             <StudentDetails key={index} {...student} index={index + 1}
+                updateAction={updateAction}
                 deleteAction={deleteAction} />)}
         </tbody>
       </Table>

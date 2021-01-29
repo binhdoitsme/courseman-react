@@ -3,9 +3,13 @@ import { Button, Modal } from "react-bootstrap";
 
 export default function DeleteConfirmation(props) {
   const [show, setShow] = useState(false);
+  const [hasModal, setHasModal] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setHasModal(true);
+  };
 
   const onSuccess = result => {
     handleClose();
@@ -24,7 +28,8 @@ export default function DeleteConfirmation(props) {
   return (
     <>
       <Button variant="danger" onClick={handleShow}>Delete</Button>
-      <Modal show={show} onHide={handleClose}>
+      {hasModal === true ? 
+      <Modal show={show} onHide={handleClose} onExited={() => setHasModal(false)}>
         <Modal.Header>
           <Modal.Title>Confirm delete</Modal.Title>
           <button type="button" className="btn-close btn-sm" onClick={handleClose}></button>
@@ -40,6 +45,7 @@ export default function DeleteConfirmation(props) {
           </Button>
         </Modal.Footer>
       </Modal>
+      : null}
     </>
   );
 };
