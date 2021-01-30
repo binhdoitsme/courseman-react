@@ -1,6 +1,6 @@
 import Navigation from './common/Navigation';
 import { Container } from 'react-bootstrap';
-import StudentModule from './student';
+import StudentManager from './student';
 
 function App() {
   return (<>
@@ -11,7 +11,7 @@ function App() {
                   { "name": "Manage enrolments", "link": "#" }
                 ]} />
     <Container>
-      <StudentModule title="Manage students" />
+      <StudentManager title="Manage students" />
     </Container>
   </>
   );

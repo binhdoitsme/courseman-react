@@ -7,10 +7,18 @@ import StudentDetails from './StudentDetails';
 
 export default function StudentList(props) {
   const [studentList, setStudentList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(undefined);
+  const [pageCount, setPageCount] = useState(undefined);
   const [alert, setAlert] = useState(undefined);
 
-  useEffect(() => studentAPI.getAll(setStudentList, err => window.alert(err)), 
-      [studentList.length]);
+  useEffect(() => studentAPI.getAll(
+      response => {
+        setStudentList(response.content);
+        setPageCount(response.pageCount);
+        setCurrentPage(response.currentPage);
+      }, 
+      err => window.alert(err)
+      ), [studentList.length]);
 
   const addToStudentList = student => setStudentList(studentList.concat(student));
   
