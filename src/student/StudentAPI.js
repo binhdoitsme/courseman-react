@@ -1,7 +1,16 @@
 import constants from '../common/Constants';
 
-function getAllStudents(onSuccess = undefined, onFailure = undefined) {
+function getFirstPageStudents(onSuccess = undefined, onFailure = undefined) {
   fetch(`${constants.host}/students`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json()).then(onSuccess).catch(onFailure)
+}
+
+function getStudentsByPage(pageNumber, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students?page=${pageNumber}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -48,7 +57,8 @@ function updateStudentById(id, data, onSuccess = undefined, onFailure = undefine
 }
 
 const studentAPI = {
-  "getAll": getAllStudents,
+  "getFirstPage": getFirstPageStudents,
+  "getByPage": getStudentsByPage,
   "create": createStudent,
   "getById": getStudentById,
   "deleteById": deleteStudent,

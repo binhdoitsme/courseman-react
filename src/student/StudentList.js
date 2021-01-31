@@ -11,14 +11,14 @@ export default function StudentList(props) {
   const [pageCount, setPageCount] = useState(undefined);
   const [alert, setAlert] = useState(undefined);
 
-  useEffect(() => studentAPI.getAll(
+  useEffect(() => studentAPI.getFirstPage(
       response => {
         setStudentList(response.content);
         setPageCount(response.pageCount);
         setCurrentPage(response.currentPage);
       }, 
       err => window.alert(err)
-      ), [studentList.length]);
+    ), [studentList.length]);
 
   const addToStudentList = student => setStudentList(studentList.concat(student));
   
@@ -33,7 +33,6 @@ export default function StudentList(props) {
               text={`Cannot create resource! Reason: ${err}!`}
               onDisposed={() => setAlert(undefined)} />)
   };
-
 
   const deleteAction = (id) => {
     const onDeleteSuccess = () => {
@@ -98,7 +97,7 @@ export default function StudentList(props) {
         </thead>
         <tbody>
           {studentList.map((student, index) =>
-            <StudentDetails key={index} {...student} index={index + 1}
+            <StudentDetails key={student.id} {...student} index={index + 1}
                 updateAction={updateAction}
                 deleteAction={deleteAction} />)}
         </tbody>
