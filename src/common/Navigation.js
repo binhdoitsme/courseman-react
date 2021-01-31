@@ -7,8 +7,8 @@ class Navigation extends React.Component {
       <Navbar variant="dark" bg="dark" expand="sm">
         <Container>
           <Nav>
-            <Navbar.Brand href="#">{this.props.appName}</Navbar.Brand>
-            <NavDropdown alignRight title="Module" align="right">
+            <Navbar.Brand href="/">{this.props.appName}</Navbar.Brand>
+            <NavDropdown alignRight title="Go to" align="right">
               {this.props.modules ? 
                 this.props.modules.map((module, index) => 
                 <NavDropdown.Item key={index} eventKey={index}
