@@ -53,22 +53,17 @@ export default function EnrolmentCreate(props) {
         "internalMark": internal,
         "examMark": exam
       };
-    } else if (internal < 0) {
+    } else if (!internal || internal < 0) {
       return {
         ...core,
         "examMark": exam
       };
-    } else if (exam < 0) {
+    } else if (!exam || exam < 0) {
       return {
         ...core,
         "internalMark": internal
       }
     }
-  };
-
-  const handleUpdate = () => {
-    props.updateAction(getSubmitBody());
-    handleClose();
   };
 
   const updateStudent = (event) => {
@@ -85,6 +80,12 @@ export default function EnrolmentCreate(props) {
       setModule,
       err => window.alert(err)
     );
+  };
+
+  const onSuccess = created => {
+    console.log(created);
+    props.onSuccess(created);
+    handleClose();
   };
 
   useEffect(() => {
@@ -153,8 +154,10 @@ export default function EnrolmentCreate(props) {
             Cancel
           </Button>
           <Button variant="primary" size="sm" 
-            onClick={handleUpdate} disabled={!changed}>
-            Update
+            onClick={() => 
+              enrolmentAPI.create(getSubmitBody(), onSuccess, props.onFailure)
+            }>
+            Create
           </Button>
         </Modal.Footer>
       </Modal>
