@@ -20,7 +20,7 @@ export default function ModuleList(props) {
 
   const onGetFailure = err => window.alert(err);
 
-  const addToModuleList = module => setModuleList(moduleList.concat(module));
+  const addToModuleList = module => setModuleList(moduleList.concat(module).sort((x, y) => y.compulsory - x.compulsory));
   
   const onCreateSuccess = (module) => {
     addToModuleList(module);
