@@ -20,7 +20,7 @@ export default function EnrolmentList(props) {
               onDisposed={() => setAlert(undefined)} />);
   };
   const onCreateFailure = (err) => {
-    setAlert(<AutoDismissAlert variant="success" heading="Failed to create" 
+    setAlert(<AutoDismissAlert variant="danger" heading="Failed to create" 
               text={`Cannot create resource! Reason: ${err}!`}
               onDisposed={() => setAlert(undefined)} />)
   };
@@ -33,8 +33,8 @@ export default function EnrolmentList(props) {
                 onDisposed={() => setAlert(undefined)} />);
     };
     const onDeleteFailure = (err) => {
-      setAlert(<AutoDismissAlert variant="success" heading="Failed to delete" 
-                text={`Cannot deleted resource with id ${id}! Reason: ${err}!`}
+      setAlert(<AutoDismissAlert variant="danger" heading="Failed to delete" 
+                text={`Cannot delete resource with id ${id}! Reason: ${err}!`}
                 onDisposed={() => setAlert(undefined)} />)
     };
     enrolmentAPI.deleteById(id, onDeleteSuccess, onDeleteFailure);
@@ -52,18 +52,25 @@ export default function EnrolmentList(props) {
                 onDisposed={() => setAlert(undefined)} />)
     };
     const onUpdateFailure = (err) => {
-      setAlert(<AutoDismissAlert variant="success" heading="Failed to delete" 
-                text={`Cannot deleted resource with id ${enrolment.id}! Reason: ${err}!`}
+      setAlert(<AutoDismissAlert variant="danger" heading="Failed to update" 
+                text={`Cannot update resource with id ${enrolment.id}! Reason: ${err}!`}
                 onDisposed={() => setAlert(undefined)} />);
     };
     enrolmentAPI.updateById(enrolment.id, enrolment, onUpdateSuccess, onUpdateFailure);
   }
 
-  useEffect(() => enrolmentAPI.getFirstPage(
+  const getFirstPage = props.getFirstPage ? props.getFirstPage 
+    : enrolmentAPI.getFirstPage
+
+  useEffect(() => getFirstPage(
     response => {
-      setEnrolmentList(response.content);
-      setPageCount(response.pageCount);
-      setCurrentPage(response.currentPage);
+      if (response.content) {
+        setEnrolmentList(response.content);
+        setPageCount(response.pageCount);
+        setCurrentPage(response.currentPage);
+      } else {
+        setEnrolmentList(response);
+      }
     }, 
     err => window.alert(err)
   ), [enrolmentList.length]);
@@ -74,7 +81,9 @@ export default function EnrolmentList(props) {
       <h2 className="my-4 text-center">{props.title}</h2>
       <Row className="my-3">
         <Col>
-          <EnrolmentCreate updateField={props.updateField}
+          <EnrolmentCreate student={props.student} studentId={props.studentId}
+            updateField={props.updateField}
+            create={props.create ? props.create : enrolmentAPI.create}
             onSuccess={onCreateSuccess} onFailure={onCreateFailure} />
         </Col>
         <Col></Col>

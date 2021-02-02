@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, FormControl, FormGroup, Modal } from "react-bootstrap";
-import enrolmentAPI from "./EnrolmentAPI";
 
 export default function EnrolmentCreate(props) {
   const [show, setShow] = useState(false);
   const [hasModal, setHasModal] = useState(false);
   const [moduleId, setModuleId] = useState(undefined);
-  const [studentId, setStudentId] = useState(undefined);
+  const [studentId, setStudentId] = useState(props.studentId);
   const [module, setModule] = useState(undefined);
-  const [student, setStudent] = useState(undefined);
+  const [student, setStudent] = useState(props.student);
   const [internal, setInternal] = useState(undefined);
   const [exam, setExam] = useState(undefined)
   const [changed, setChanged] = useState(false);
 
   const resetState = () => {
     setModuleId(undefined);
-    setStudentId(undefined);
+    setStudentId(props.studentId);
     setModule(undefined);
-    setStudent(undefined);
+    setStudent(props.student);
     setInternal(undefined);
     setExam(undefined);
     setChanged(false);
@@ -88,6 +87,11 @@ export default function EnrolmentCreate(props) {
     handleClose();
   };
 
+  const onFailure = err => {
+    props.onFailure(err);
+    handleClose();
+  }
+
   useEffect(() => {
     handleChange(student, module);
   }, [studentId, moduleId, student, module, internal, exam]);
@@ -111,13 +115,12 @@ export default function EnrolmentCreate(props) {
                 onChange={e => {
                   setStudentId(Number(e.target.value));
                   handleChange(student, module);
-                }} onBlur={updateStudent} />
+                }} onBlur={updateStudent} disabled={props.student} />
               <br />
               <Form.Label>Student info: </Form.Label>
               {student && student.id ? 
                 <FormControl type="text" disabled value={`${student.name} - DOB: ${student.dob}`} />
                 : <FormControl type="text" disabled value="" />}
-              
             </FormGroup>
             <br />
             <FormGroup>
@@ -155,7 +158,7 @@ export default function EnrolmentCreate(props) {
           </Button>
           <Button variant="primary" size="sm" 
             onClick={() => 
-              enrolmentAPI.create(getSubmitBody(), onSuccess, props.onFailure)
+              props.create(getSubmitBody(), onSuccess, onFailure)
             }>
             Create
           </Button>

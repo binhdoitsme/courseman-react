@@ -56,13 +56,33 @@ function updateStudentById(id, data, onSuccess = undefined, onFailure = undefine
   }).then(response => response.json()).then(onSuccess).catch(onFailure);
 }
 
+function getFirstPageEnrolmentsByStudent(studentId, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students/${studentId}/enrolments`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
+
+function createEnrolmentByStudent(studentId, data, onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/students/${studentId}/enrolments/${data.module.id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
+
 const studentAPI = {
   "getFirstPage": getFirstPageStudents,
   "getByPage": getStudentsByPage,
   "create": createStudent,
   "getById": getStudentById,
   "deleteById": deleteStudent,
-  "updateById": updateStudentById
+  "updateById": updateStudentById,
+  "getEnrolmentFirstPage": getFirstPageEnrolmentsByStudent,
+  "createEnrolment": createEnrolmentByStudent
 };
 
 export default studentAPI;

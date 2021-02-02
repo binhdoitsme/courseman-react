@@ -99,7 +99,8 @@ export default function StudentList(props) {
           {studentList.map((student, index) =>
             <StudentDetails key={student.id} {...student} index={index + 1}
                 updateAction={updateAction}
-                deleteAction={deleteAction} />)}
+                deleteAction={deleteAction}
+                updateField={props.updateField} />)}
         </tbody>
       </Table>
     </>

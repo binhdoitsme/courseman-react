@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Form, FormControl, FormGroup, Modal } from 'react-bootstrap';
 import DeleteConfirmation from "../common/DeleteConfirmation";
+import EnrolmentList from '../enrolment/EnrolmentList';
+import studentAPI from './StudentAPI';
 
 function StudentDetailsLine(props) {
   const verticalAlignCell = { verticalAlign: "middle" };
@@ -47,7 +49,8 @@ export default function StudentDetails(props) {
     <>
       <StudentDetailsLine onClick={handleShow} {...props} />
       {hasModal === true ? 
-      <Modal show={show} onHide={handleClose} onExited={() => setHasModal(false)}>
+      <Modal show={show} onHide={handleClose} size="lg"
+        onExited={() => setHasModal(false)}>
         <Modal.Header>
           <Modal.Title>Student details</Modal.Title>
           <button type="button" className="btn-close btn-sm" onClick={handleClose}></button>
@@ -71,6 +74,15 @@ export default function StudentDetails(props) {
               <FormControl type="date" value={dob} onChange={e => {
                 setDob(e.target.value); handleChange(name, e.target.value);}} />
             </FormGroup>
+            <br />
+            <h5>Enrolments</h5>
+            <EnrolmentList create={(data, onSuccess, onFailure) =>
+                studentAPI.createEnrolment(props.id, data, onSuccess, onFailure)}
+              getFirstPage={(onSuccess, onFailure) =>
+                studentAPI.getEnrolmentFirstPage(props.id, onSuccess, onFailure)}
+              student={{id: props.id, name: props.name, dob: props.dob}}
+              studentId={props.id} 
+              updateField={props.updateField} />
           </Form>
         </Modal.Body>
         
