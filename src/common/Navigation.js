@@ -12,7 +12,7 @@ class Navigation extends React.Component {
               {this.props.modules ? 
                 this.props.modules.map((module, index) => 
                 <NavDropdown.Item key={index} eventKey={index}
-                  href={module.link}>{module.name}</NavDropdown.Item>) : ""}
+                  href={module.endpoint}>{module.name}</NavDropdown.Item>) : ""}
             </NavDropdown>
           </Nav>
           <Nav>

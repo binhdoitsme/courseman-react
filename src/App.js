@@ -1,19 +1,30 @@
-import Navigation from './common/Navigation';
+import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import StudentManager from './student';
-import ModuleManager from './module';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import constants from './common/Constants';
+import Navigation from './common/Navigation';
 import EnrolmentManager from './enrolment';
-import { Link, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import ModuleManager from './module';
+import StudentManager from './student';
+
+function getServices(onSuccess = undefined, onFailure = undefined) {
+  fetch(`${constants.host}/services`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json()).then(onSuccess).catch(onFailure);
+}
 
 function App() {
+  const [modules, setModules] = useState([]);
+
+  useEffect(() => getServices(setModules, alert), []);
+
   return (<>
     <Router>
       <Navigation appName="CourseManApp"
-        modules={[
-          { "name": "Manage students", "link": "/students" },
-          { "name": "Manage course modules", "link": "/modules" },
-          { "name": "Manage enrolments", "link": "/enrolments" }
-        ]} />
+        modules={modules} />
       <Container>
         <Switch>
           <Route path="/students">
